@@ -34,7 +34,7 @@ setup(
       url='https://github.com/ken0-1n/annot_gnomAD.git',
       license='MIT',
       
-      packages = find_packages(exclude = ['test']),
+      packages = find_packages(exclude = ['tests']),
       install_requires=[
           'cyvcf2'
       ],

@@ -22,7 +22,7 @@ def get_strand(sv_type):
     elif sv_type == "DUP":
         ret = [taple2]
     elif sv_type == "INS":
-        ret = [taple1]
+        ret = []
     elif sv_type == "INV":
         ret = [taple3,taple4]
     elif sv_type == "MCNV":
@@ -30,12 +30,12 @@ def get_strand(sv_type):
     return ret
 
 
-def convert_vcf_to_bedpe(input_file, output_file, margin_major, margin_minor, method):
+def convert_vcf_to_bedpe(input_file, output_file, margin_major, margin_minor, method, is_filter):
 
     hOUT = open(output_file, 'w')
     vcf = VCF(input_file, "r")
     for variant in vcf:
-        if variant.FILTER != None: continue # a value of PASS in the VCF will give None 
+        if variant.FILTER != None and is_filter: continue # a value of PASS in the VCF will give None 
 
         chr1, POS = variant.CHROM, variant.POS
         chr2, END  = variant.INFO.get("CHR2"), variant.INFO.get("END")
@@ -86,7 +86,7 @@ def convert_to_bedpe(input_file, output_file, margin_major, margin_minor, method
             F = line.rstrip('\n').split('\t')
             if F[0] == "Chr_1" and method == "genomonSV": continue
 
-            chr1, pos1, dir1, chr2, pos2, dir2, read_num = F[0], F[1], F[2], F[3], F[4], F[5], F[13]
+            chr1, pos1, dir1, chr2, pos2, dir2 = F[0], F[1], F[2], F[3], F[4], F[5]
             start1, end1, start2, end2 = pos1, pos1, pos2, pos2
             ID = chr1 + ':' + dir1 + start1 + '-' + chr2 + ':' + dir2 + start2
 
@@ -103,7 +103,7 @@ def convert_to_bedpe(input_file, output_file, margin_major, margin_minor, method
                 start2 = str(int(start2) - int(margin_major))
                 end2 = str(int(end2) + int(margin_minor))
 
-            print("\t".join([chr1, start1, end1, chr2, start2, end2, ID, str(read_num), dir1, dir2]), file = hOUT)
+            print("\t".join([chr1, start1, end1, chr2, start2, end2, ID, '.', dir1, dir2]), file = hOUT)
 
     hOUT.close()
 
@@ -111,7 +111,7 @@ def convert_to_bedpe(input_file, output_file, margin_major, margin_minor, method
 def comp_main(args):
     
     convert_to_bedpe(args.input_sv, args.out_pref + ".sv1.bedpe", args.margin, args.margin, "genomonSV")
-    convert_vcf_to_bedpe(args.gnomad_vcf, args.out_pref + ".sv2.bedpe", args.margin, args.margin, "gnomAD")
+    convert_vcf_to_bedpe(args.gnomad_vcf, args.out_pref + ".sv2.bedpe", args.margin, args.margin, "gnomAD", args.vcf_filter)
     
     hOUT = open(args.out_pref + ".sv_comp.bedpe", 'w')
     subprocess.check_call(["bedtools", "pairtopair", "-a", args.out_pref + ".sv1.bedpe", "-b", args.out_pref + ".sv2.bedpe"], stdout = hOUT)
@@ -130,10 +130,14 @@ def comp_main(args):
     with open(args.input_sv, 'r') as hIN:
         for line in hIN:
             F = line.rstrip('\n').split('\t')
-            chr1, pos1, dir1, chr2, pos2, dir2 = F[0], F[1], F[2], F[3], F[4], F[5]
-            start1, end1, start2, end2 = pos1, pos1, pos2, pos2
-            ID = chr1 + ':' + dir1 + start1 + '-' + chr2 + ':' + dir2 + start2
-            SV_info = sv_comp[ID] if ID in sv_comp else "---\t---\t---"
+            
+            if F[0] == "Chr_1":
+                SV_info = "gnomAD_AN\tgnomAD_AC\tgnomAD_AF"
+            else:
+                chr1, pos1, dir1, chr2, pos2, dir2 = F[0], F[1], F[2], F[3], F[4], F[5]
+                start1, end1, start2, end2 = pos1, pos1, pos2, pos2
+                ID = chr1 + ':' + dir1 + start1 + '-' + chr2 + ':' + dir2 + start2
+                SV_info = sv_comp[ID] if ID in sv_comp else "---\t---\t---"
             print('\t'.join(F) + '\t' + SV_info, file=hOUT)
     hOUT.close()
 
