@@ -4,7 +4,7 @@ Annotate structural variants in gnomAD
 ## Dependency
 
 ### Python
-Python (>= 3.6), [cyvcf2](https://github.com/brentp/cyvcf2)
+Python (>= 2.7, >= 3.6), [cyvcf2](https://github.com/brentp/cyvcf2)
 
 ### Software
 [bedtools](http://bedtools.readthedocs.org/en/latest/])
@@ -22,7 +22,7 @@ python setup.py install
 
 ```
 annot_gnomad comp [-h] --input_sv INPUT_SV --gnomad_vcf GNOMAD_VCF
-                   --out_pref OUT_PREF [--margin MARGIN] [--vcf_filter]
+                       --output OUTPUT [--margin MARGIN] [--vcf_filter]
 ```
 
 You can check the manual by typing
