@@ -10,7 +10,7 @@ Python (>= 3.6), [cyvcf2](https://github.com/brentp/cyvcf2)
 [bedtools](http://bedtools.readthedocs.org/en/latest/])
 
 ### Database
-[gnomAD](https://gnomad.broadinstitute.org/downloads)
+[gnomAD gnomad_v2_sv.sites.vcf.gz](https://gnomad.broadinstitute.org/downloads)
 
 ## Install
 
