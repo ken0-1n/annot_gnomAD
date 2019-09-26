@@ -33,3 +33,7 @@ annot_gnomad comp -h
 ## Results
 
 The primary result is ${out_pref}.genomonSV.result.gnomad.txt
+
+    gnomAD_AN: Total number of alleles genotyped
+    gnomAD_AC: Number of non-reference alleles
+    gnomAD_AF: Allele frequency
