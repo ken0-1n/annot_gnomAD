@@ -10,7 +10,7 @@ Python (>= 3.6), [cyvcf2](https://github.com/brentp/cyvcf2)
 [bedtools](http://bedtools.readthedocs.org/en/latest/])
 
 ### Database
-[gnomAD](https://gnomad.broadinstitute.org/downloads)
+[gnomAD gnomad_v2_sv.sites.vcf.gz](https://gnomad.broadinstitute.org/downloads)
 
 ## Install
 
@@ -33,3 +33,7 @@ annot_gnomad comp -h
 ## Results
 
 The primary result is ${out_pref}.genomonSV.result.gnomad.txt
+
+    gnomAD_AN: Total number of alleles genotyped
+    gnomAD_AC: Number of non-reference alleles
+    gnomAD_AF: Allele frequency
