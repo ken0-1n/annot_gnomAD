@@ -7,7 +7,7 @@ Annotate structural variants in gnomAD
 Python (>= 2.7, >= 3.6), [cyvcf2](https://github.com/brentp/cyvcf2)
 
 ### Software
-[bedtools](http://bedtools.readthedocs.org/en/latest/])
+[bedtools](http://bedtools.readthedocs.org/en/latest/)
 
 ### Database
 [gnomAD gnomad_v2_sv.sites.vcf.gz](https://gnomad.broadinstitute.org/downloads)
