@@ -110,23 +110,25 @@ def convert_to_bedpe(input_file, output_file, margin_major, margin_minor, method
 
 def comp_main(args):
     
-    convert_to_bedpe(args.input_sv, args.out_pref + ".sv1.bedpe", args.margin, args.margin, "genomonSV")
-    convert_vcf_to_bedpe(args.gnomad_vcf, args.out_pref + ".sv2.bedpe", args.margin, args.margin, "gnomAD", args.vcf_filter)
+    out_pref, ext = os.path.splitext(args.output)
     
-    hOUT = open(args.out_pref + ".sv_comp.bedpe", 'w')
-    subprocess.check_call(["bedtools", "pairtopair", "-a", args.out_pref + ".sv1.bedpe", "-b", args.out_pref + ".sv2.bedpe"], stdout = hOUT)
+    convert_to_bedpe(args.input_sv, out_pref + ".sv1.bedpe", args.margin, args.margin, "genomonSV")
+    convert_vcf_to_bedpe(args.gnomad_vcf, out_pref + ".sv2.bedpe", args.margin, args.margin, "gnomAD", args.vcf_filter)
+    
+    hOUT = open(out_pref + ".sv_comp.bedpe", 'w')
+    subprocess.check_call(["bedtools", "pairtopair", "-a", out_pref + ".sv1.bedpe", "-b", out_pref + ".sv2.bedpe"], stdout = hOUT)
     hOUT.close()
 
     # create dictionary
     sv_comp = {}
-    with open(args.out_pref + ".sv_comp.bedpe", 'r') as hIN:
+    with open(out_pref + ".sv_comp.bedpe", 'r') as hIN:
         for line in hIN:
             F = line.rstrip('\n').split('\t')
             sv_comp[F[6]] = "\t".join([F[20],F[21],F[22]])
             # print('\t'.join(F) + "\t"+ "\t".join([F[19],F[20],F[21]]))
 
     # add SV annotation to sv
-    hOUT = open(args.out_pref + ".genomonSV.result.gnomad.txt", 'w')
+    hOUT = open(args.output, 'w')
     with open(args.input_sv, 'r') as hIN:
         for line in hIN:
             F = line.rstrip('\n').split('\t')
@@ -142,7 +144,7 @@ def comp_main(args):
     hOUT.close()
 
     # remove intermediate files
-    os.remove(args.out_pref + ".sv1.bedpe")
-    os.remove(args.out_pref + ".sv2.bedpe")
-    os.remove(args.out_pref + ".sv_comp.bedpe")
+    os.remove(out_pref + ".sv1.bedpe")
+    os.remove(out_pref + ".sv2.bedpe")
+    os.remove(out_pref + ".sv_comp.bedpe")
     

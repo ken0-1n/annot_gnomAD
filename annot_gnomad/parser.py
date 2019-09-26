@@ -21,7 +21,7 @@ def create_parser():
         comp_parser = subparsers.add_parser("comp", help = "compare structural variation results and structural variants in gnomAD")
         comp_parser.add_argument("--input_sv", help = "the result of GenomonSV", type = str, required=True)
         comp_parser.add_argument("--gnomad_vcf", help = "the structural valiants in gnomAD", type = str, required=True)
-        comp_parser.add_argument("--out_pref", help = "the output file prefix", type = str, required=True)
+        comp_parser.add_argument("--output", help = "the output file", type = str, required=True)
         comp_parser.add_argument("--margin", help = "the margin for comparing SVs and SVs in gnomAD", type = int, default = 10)
         comp_parser.add_argument("--vcf_filter", default = True, action = "store_false", help = "If true, only PASS records are output")
         
