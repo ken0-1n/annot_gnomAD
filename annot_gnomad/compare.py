@@ -1,7 +1,7 @@
+from __future__ import print_function
 from cyvcf2 import VCF
 import sys, os
 import subprocess
-
 
 def get_strand(sv_type):
     
@@ -72,7 +72,7 @@ def convert_vcf_to_bedpe(input_file, output_file, margin_major, margin_minor, me
             # Strand1   Strand2
             # AN, AC, AF sv-type
             print("\t".join([chr1, str(start1), str(end1), chr2, str(start2), str(end2),
-                ID, str("{:.0f}".format(qual)), dir1, dir2, str(an), str(ac), str("{:.5f}".format(af))]), file = hOUT)
+                ID, str("{:.0f}".format(qual)), dir1, dir2, str(an), str(ac), str("{:.5f}".format(af))]), file=hOUT)
             
     vcf.close()
     hOUT.close()
